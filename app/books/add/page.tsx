@@ -114,7 +114,7 @@ export default function AddBookPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-400">
+      <div className="min-h-screen  ">
         {/* Header */}
         <header className="border-b border-border bg-card">
           <div className="container mx-auto px-4 py-4">
@@ -135,7 +135,7 @@ export default function AddBookPage() {
 
         <main className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
-            <Card>
+            <Card className="bg-gradient-to-r from-primary/5 via-primary/0 to-primary/5">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Plus className="h-5 w-5" />

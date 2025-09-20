@@ -8,9 +8,8 @@ import { AuthProvider } from "@/contexts/auth-context"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Library Management System",
-  description: "A comprehensive library management system for managing books and inventory",
-  generator: "v0.app",
+  title: "Reprint",
+  description: "Save and showcase the books you love in one place.",
 }
 
 export default function RootLayout({

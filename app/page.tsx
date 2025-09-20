@@ -165,7 +165,7 @@ export default function HomePage() {
               <Link href="#features" className="text-sm text-muted-foreground hover:text-primary">Features</Link>
               {/* <Link href="#stats" className="text-sm text-muted-foreground hover:text-primary">Statistics</Link> */}
               {/* <Link href="#books" className="text-sm text-muted-foreground hover:text-primary">Books</Link> */}
-              <Link href="#genres" className="text-sm text-muted-foreground hover:text-primary">Genres</Link>
+              {/* <Link href="#genres" className="text-sm text-muted-foreground hover:text-primary">Genres</Link> */}
               <Link href="/books/add">
                 <Button size="sm">Add Book</Button>
               </Link>
