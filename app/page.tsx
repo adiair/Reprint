@@ -5,9 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { BookOpen, Search, Plus, Sparkles, BarChart3, Library, LogOut } from "lucide-react"
+import { BookOpen, Search, ChevronDown, Plus, Sparkles, BarChart3, Library, LogOut } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import ProtectedRoute from "@/components/auth/protected-route"
@@ -154,19 +152,24 @@ export default function HomePage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen  bg-background flex flex-col">
+      <div className="min-h-screen bg-background flex flex-col">
         {/* Header */}
-        <header className="border-b m-auto w-5xl border-border bg-card/80 sticky top-0 z-50">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <header className="border-b m-auto w-6xl border-border bg-card/80 sticky top-0 z-50">
+          <div className="container mx-auto w-5xl px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Library className="h-8 w-8 text-amber-400" />
               <h1 className="text-2xl font-bold text-foreground">Reprint</h1>
             </div>
+            <div className="flex gap-4">
+              <Link href="#Hero" className="text-sm flex items-center gap-1 text-muted-foreground hover:text-primary">About  
+              <ChevronDown className="h-4 w-4"/>
+              </Link>
+              <Link href="#features" className="text-sm flex items-center  text-muted-foreground hover:text-primary">
+              Features
+              </Link>
+              <Link href="#books" className="text-sm flex items-center  text-muted-foreground hover:text-primary">Books</Link>
+            </div>
             <nav className="flex items-center gap-4">
-              <Link href="#features" className="text-sm text-muted-foreground hover:text-primary">Features</Link>
-              {/* <Link href="#stats" className="text-sm text-muted-foreground hover:text-primary">Statistics</Link> */}
-              {/* <Link href="#books" className="text-sm text-muted-foreground hover:text-primary">Books</Link> */}
-              {/* <Link href="#genres" className="text-sm text-muted-foreground hover:text-primary">Genres</Link> */}
               <Link href="/books/add">
                 <Button size="sm" className="bg-amber-400">Add Book</Button>
               </Link>
@@ -191,7 +194,7 @@ export default function HomePage() {
         </section>
 
         {/* Hero / Banner */}
-        <section className="relative ">
+        <section id="Hero" className="relative ">
           <div className="absolute inset-0" />
           <div className="relative border-t-2 border-b-2 border-dashed border-gray-400/50 container mx-auto px-4 py-30 text-center"
           style={{
@@ -255,82 +258,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* All Books (Full List) */}
-        {/* <section id="all-books" className="container mx-auto m-auto w-5xl px-4 py-10">
-          <h3 className="text-2xl font-bold mb-6">All Books</h3>
-          {allBooks.length === 0 ? (
-            <Card className="text-center">
-              <CardContent className="py-8">
-                <p className="text-muted-foreground">No books found.</p>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {allBooks.map((book) => (
-                <Card key={book.id} className="hover:shadow-md transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="line-clamp-2">{book.title}</CardTitle>
-                    <CardDescription>by {book.author}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="mb-3">
-                      <img
-                        src={book.image_url || "/placeholder.jpg"}
-                        alt={book.title}
-                        className="w-full h-40 object-cover rounded"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = "/placeholder.jpg"
-                        }}
-                      />
-                    </div>
-                    {book.genre && (
-                      <p className="text-xs text-muted-foreground">{book.genre}</p>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-        </section> */}
 
 
 
-        {/* Stats */}
-        {/* {stats && (
-          <section id="stats" className="bg-card py-16">
-            <div className="container mx-auto px-4">
-              <h3 className="text-3xl font-bold text-center mb-12">At a Glance</h3>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <Card>
-                  <CardContent className="p-6 text-center">
-                    <div className="text-3xl font-bold">{stats.totalBooks}</div>
-                    <p className="text-sm text-muted-foreground">Total Books</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-6 text-center">
-                    <div className="text-3xl font-bold">{stats.totalQuantity}</div>
-                    <p className="text-sm text-muted-foreground">Total Copies</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-6 text-center">
-                    <div className="text-3xl font-bold">{stats.availableQuantity}</div>
-                    <p className="text-sm text-muted-foreground">Available Now</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-6 text-center">
-                    <div className="text-3xl font-bold">{stats.genreStats.length}</div>
-                    <p className="text-sm text-muted-foreground">Genres</p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </section>
-        )} */}
+        
 
-        {/* Recent Books */}
+        {/* All Total Books */}
         <section id="books" className="container mx-auto m-auto w-5xl px-4 py-16">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-3xl font-bold">All Books</h3>

@@ -10,11 +10,13 @@ import "./globals.css"
 export const metadata: Metadata = {
   title: "Reprint",
   description: "Save and showcase the books you love in one place.",
+  icons: "/faviicon0.png",  
 }
+
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: Readonly<{ 
   children: React.ReactNode
 }>) {
   return (
