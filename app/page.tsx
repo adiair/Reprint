@@ -7,8 +7,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { BookOpen, Search, Plus, Users, BarChart3, Library, LogOut } from "lucide-react"
+import { BookOpen, Search, Plus, Sparkles, BarChart3, Library, LogOut } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import ProtectedRoute from "@/components/auth/protected-route"
 
 interface Book {
@@ -144,7 +145,7 @@ export default function HomePage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <Library className="h-12 w-12 mx-auto mb-4 text-primary animate-pulse" />
+          <Library className="h-12 w-12 mx-auto mb-4 text-amber-400 animate-pulse" />
           <p className="text-muted-foreground">Loading Reprint...</p>
         </div>
       </div>
@@ -155,10 +156,10 @@ export default function HomePage() {
     <ProtectedRoute>
       <div className="min-h-screen  bg-background flex flex-col">
         {/* Header */}
-        <header className="border-b m-auto w-5xl border-border bg-card sticky top-0 z-50">
+        <header className="border-b m-auto w-5xl border-border bg-card/80 sticky top-0 z-50">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Library className="h-8 w-8 text-primary" />
+              <Library className="h-8 w-8 text-amber-400" />
               <h1 className="text-2xl font-bold text-foreground">Reprint</h1>
             </div>
             <nav className="flex items-center gap-4">
@@ -167,29 +168,53 @@ export default function HomePage() {
               {/* <Link href="#books" className="text-sm text-muted-foreground hover:text-primary">Books</Link> */}
               {/* <Link href="#genres" className="text-sm text-muted-foreground hover:text-primary">Genres</Link> */}
               <Link href="/books/add">
-                <Button size="sm">Add Book</Button>
+                <Button size="sm" className="bg-amber-400">Add Book</Button>
               </Link>
             </nav>
           </div>
         </header>
 
+        <section className="relative mt-20 w-6xl m-auto rounded-md border-amber-400">
+          <div className="absolute m-auto z-45 left-101 top-5 flex justify-center items-center gap-3 rounded-full p-1 w-80 border-2 border-amber-400 mt-5">
+            <Sparkles className="h-4 w-4 text-emerald-400 rotate-5" />
+            Trusted by more than 500+ users</div>
+          <div className="relative w-full h-52 md:h-[24rem] mr-2 lg:h-[35rem]">
+            <Image
+              src="/reprint 2 copy.png"
+              alt="Cover Image"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+          </div>
+        </section>
+
         {/* Hero / Banner */}
-        <section className="relative bg-gradient-to-r from-primary/10 via-background to-background">
-          <div className="container mx-auto px-4 py-30 text-center">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground">
-              Manage Your Library <span className="text-primary">Effortlessly</span>
+        <section className="relative ">
+          <div className="absolute inset-0" />
+          <div className="relative border-t-2 border-b-2 border-dashed border-gray-400/50 container mx-auto px-4 py-30 text-center"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: "60px 60px",
+          }}>
+            <h2 className=" text-4xl md:text-5xl font-extrabold text-foreground">
+              Manage Your Library <span className="text-amber-500 ">Effortlessly</span>
             </h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
               Reprint is your professional book inventory system. Track, manage, and explore books with ease.
             </p>
             <div className="mt-6 flex justify-center gap-4">
               <Link href="/books">
-                <Button size="lg">
+                <Button size="lg" className="bg-amber-400">
                   <BookOpen className="h-5 w-5 mr-2" /> Browse Books
                 </Button>
               </Link>
               <Link href="/books/add">
-                <Button size="lg" variant="outline">
+                <Button size="lg" className="border-2 border-amber-400 bg-black text-white">
                   <Plus className="h-5 w-5 mr-2" /> Add Book
                 </Button>
               </Link>
@@ -198,27 +223,31 @@ export default function HomePage() {
         </section>
 
 
+
+
+
+
         {/* Features */}
         <section id="features" className="container m-auto w-5xl mx-auto px-4 py-16">
           <h3 className="text-3xl font-bold text-center mb-12">Features</h3>
           <div className="grid my-8 md:grid-cols-3 gap-8">
             <Card className="shadow-full shadow-gray-500">
               <CardContent className="p-6 text-center">
-                <Search className="h-10 w-10 mx-auto text-primary mb-4" />
-                <h4 className="text-lg font-semibold">Quick Search</h4>
+                <Search className="h-10 w-10 mx-auto text-amber-400 mb-4" />
+                <h4 className="text-lg font-semibold ">Quick Search</h4>
                 <p className="text-sm text-muted-foreground mt-2">Find books by title, author, or ISBN instantly.</p>
               </CardContent>
             </Card>
             <Card className="shadow-full shadow-gray-500">
               <CardContent className="p-6 text-center">
-                <BarChart3 className="h-10 w-10 mx-auto text-primary mb-4" />
+                <BarChart3 className="h-10 w-10 mx-auto text-amber-400 mb-4" />
                 <h4 className="text-lg font-semibold">Detailed Stats</h4>
                 <p className="text-sm text-muted-foreground mt-2">Track books, copies, availability, and genres.</p>
               </CardContent>
             </Card>
             <Card className="shadow-full shadow-gray-500">
               <CardContent className="p-6 text-center">
-                <Library className="h-10 w-10 mx-auto text-primary mb-4" />
+                <Library className="h-10 w-10 mx-auto text-amber-400 mb-4" />
                 <h4 className="text-lg font-semibold">Smart Management</h4>
                 <p className="text-sm text-muted-foreground mt-2">Easily add, update, and manage your collection.</p>
               </CardContent>
@@ -264,7 +293,7 @@ export default function HomePage() {
           )}
         </section> */}
 
-        
+
 
         {/* Stats */}
         {/* {stats && (
@@ -306,7 +335,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-3xl font-bold">All Books</h3>
             <Link href="/books">
-              <Button variant="outline" size="sm">View All</Button>
+              <Button className="border-2 bg-black border-amber-400 text-amber-400" size="sm">View All</Button>
             </Link>
           </div>
           {books.length === 0 ? (
@@ -323,23 +352,23 @@ export default function HomePage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {books.map((book) => (
-                <Card key={book.id} className="hover:shadow-md transition-shadow">
+                <Card key={book.id} className="relative hover:shadow-md bg-amber-500/15 transition-shadow">
+                  <div className="absolute h-6 w-6 right-4 top-4 rounded-full bg-amber-400/80"></div>
                   <CardHeader>
-                    <CardTitle className="line-clamp-2">{book.title}</CardTitle>
+                    <CardTitle className="line-clamp-2 text-primary">{book.title}</CardTitle>
                     <CardDescription>by {book.author}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="mb-3">
                       <img
-                        src={book.image_url || "/placeholder.jpg"}
+                        src={book.image_url || "/https://t3.ftcdn.net/jpg/06/13/47/20/360_F_613472072_YSkmDRTLl6twoSpkjXSYkCFE7kNCzet0.jpg"}
                         alt={book.title}
-                        className="w-full h-40 object-cover rounded"
+                        className="w-full h-80 object-cover rounded"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = "/placeholder.jpg"
+                          (e.target as HTMLImageElement).src = "/https://t3.ftcdn.net/jpg/06/13/47/20/360_F_613472072_YSkmDRTLl6twoSpkjXSYkCFE7kNCzet0.jpg"
                         }}
                       />
                     </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2">{book.description || "No description available."}</p>
                   </CardContent>
                 </Card>
               ))}

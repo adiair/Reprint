@@ -114,20 +114,20 @@ export default function AddBookPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen  ">
+      <div className="min-h-screen w-3xl m-auto ">
         {/* Header */}
         <header className="border-b border-border bg-card">
           <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center text-emerald-400 gap-3">
               <Link href="/books">
                 <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4  w-4 mr-2" />
+                  <ArrowLeft className="h-4 text-emerald-400 w-4 mr-2" />
                   Back to Books
                 </Button>
               </Link>
               <div className="flex items-center gap-2">
-                <Library className="h-6 w-6 text-primary" />
-                <h1 className="text-xl font-bold">Add New Book</h1>
+                <Library className="h-6 w-6 text-amber-400" />
+                <h1 className="text-xl text-primary font-bold">Add New Book</h1>
               </div>
             </div>
           </div>
@@ -135,10 +135,14 @@ export default function AddBookPage() {
 
         <main className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
-            <Card className="bg-gradient-to-r from-primary/5 via-primary/0 to-primary/5">
+            <Card className="bg-gradient-to-r from-primary/5 via-primary/0 to-primary/5"
+            style={{
+              background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99, 102, 241, 0.25), transparent 70%), #000000",
+            }}
+            >
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Plus className="h-5 w-5" />
+                <CardTitle className="flex text-amber-400 items-center gap-2">
+                  <Plus className="h-5 w-5 text-amber-400" />
                   Book Information
                 </CardTitle>
                 <CardDescription>Enter the details for the new book</CardDescription>
@@ -160,7 +164,7 @@ export default function AddBookPage() {
                   {/* Basic Information */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="title">Title *</Label>
+                      <Label htmlFor="title">Title <span className="text-red-500">*</span></Label>
                       <Input
                         id="title"
                         value={formData.title}
@@ -170,7 +174,7 @@ export default function AddBookPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="author">Author *</Label>
+                      <Label htmlFor="author">Author <span className="text-red-500">*</span></Label>
                       <Input
                         id="author"
                         value={formData.author}
@@ -203,13 +207,6 @@ export default function AddBookPage() {
                           <SelectItem value="Non-Fiction">Non-Fiction</SelectItem>
                           <SelectItem value="Romance">Romance</SelectItem>
                           <SelectItem value="Mystery">Mystery</SelectItem>
-                          <SelectItem value="Science Fiction">Science Fiction</SelectItem>
-                          <SelectItem value="Fantasy">Fantasy</SelectItem>
-                          <SelectItem value="Biography">Biography</SelectItem>
-                          <SelectItem value="History">History</SelectItem>
-                          <SelectItem value="Self-Help">Self-Help</SelectItem>
-                          <SelectItem value="Business">Business</SelectItem>
-                          <SelectItem value="Technology">Technology</SelectItem>
                           <SelectItem value="Other">Other</SelectItem>
                         </SelectContent>
                       </Select>
@@ -292,7 +289,7 @@ export default function AddBookPage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="quantity">Quantity *</Label>
                       <Input
@@ -319,10 +316,10 @@ export default function AddBookPage() {
                         required
                       />
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="flex gap-3">
-                    <Button type="submit" disabled={loading} className="flex-1">
+                    <Button type="submit" disabled={loading} className="flex-1 bg-amber-400">
                       {loading ? "Adding Book..." : "Add Book"}
                     </Button>
                     <Link href="/books">

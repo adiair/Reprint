@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { BookOpen, Search, Plus, Filter, ArrowLeft, ArrowRight, Library } from "lucide-react"
+import { BookOpen, Search, Plus, Filter, ArrowLeft, ArrowRight, Library, X } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 
@@ -48,6 +48,7 @@ export default function BooksPage() {
   const [authorFilter, setAuthorFilter] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(true)
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
 
   useEffect(() => {
     fetchBooks()
@@ -111,26 +112,42 @@ export default function BooksPage() {
     fetchBooks()
   }
 
+  const openModal = (book: Book) => {
+    setSelectedBook(book)
+  }
+
+  const closeModal = () => {
+    setSelectedBook(null)
+  }
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen w-6xl m-auto bg-background"
+      style={{
+        background: "#000000",
+        backgroundImage: `
+        radial-gradient(circle, rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px)
+      `,
+        backgroundSize: "30px 30px",
+        backgroundPosition: "0 0",
+      }}>
       {/* Header */}
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link href="/">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
+                <Button variant="ghost" className="text-emerald-400" size="lg">
+                  <ArrowLeft className="h-7 w-7 text-emerald-400 " />
                   Back
                 </Button>
               </Link>
-              <div className="flex items-center gap-2">
-                <Library className="h-6 w-6 text-primary" />
-                <h1 className="text-xl font-bold">Book Collection</h1>
+              <div className="flex ml-10 items-center gap-2">
+                <Library className="h-6 w-6 text-amber-400" />
+                <h1 className="text-xl  font-bold">Book Collection</h1>
               </div>
             </div>
             <Link href="/books/add">
-              <Button>
+              <Button className="bg-amber-400">
                 <Plus className="h-4 w-4 mr-2" />
                 Add New Book
               </Button>
@@ -139,32 +156,32 @@ export default function BooksPage() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         {/* Search and Filters */}
-        <Card className="mb-8">
+        <Card className="mb-8 border-2 border-amber-400/40">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5" />
+            <CardTitle className="flex text-md items-center gap-2">
+              <Search className="h-3 w-3" />
               Search & Filter
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSearch} className="space-y-4">
-              <div className="flex gap-3">
+              <div className="flex gap-1">
                 <Input
-                  placeholder="Search by title, author, or ISBN..."
+                  placeholder="Search by title, author..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="flex-1"
                 />
                 <Button type="submit">
-                  <Search className="h-4 w-4 mr-2" />
+                  <Search className="h-2 w-2 mr-2" />
                   Search
                 </Button>
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-1">
                 <Select value={genreFilter} onValueChange={setGenreFilter}>
-                  <SelectTrigger className="w-48">
+                  <SelectTrigger className="w-30">
                     <SelectValue placeholder="Filter by genre" />
                   </SelectTrigger>
                   <SelectContent>
@@ -181,10 +198,10 @@ export default function BooksPage() {
                   placeholder="Filter by author"
                   value={authorFilter}
                   onChange={(e) => setAuthorFilter(e.target.value)}
-                  className="w-48"
+                  className="w-31"
                 />
                 <Button type="button" variant="outline" onClick={clearFilters}>
-                  <Filter className="h-4 w-4 mr-2" />
+                  <Filter className="h-2 w-2 mr-2" />
                   Clear Filters
                 </Button>
               </div>
@@ -260,7 +277,7 @@ export default function BooksPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {books.map((book) => (
-              <Card key={book.id} className="hover:shadow-md transition-shadow">
+              <Card key={book.id} className="hover:shadow-md bg-amber-700/30 transition-shadow">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -277,7 +294,7 @@ export default function BooksPage() {
                     <img
                       src={book.image_url || "/placeholder.jpg"}
                       alt={book.title}
-                      className="w-full h-48 object-cover rounded"
+                      className="w-full h-70 object-cover rounded"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = "/placeholder.jpg"
                       }}
@@ -292,22 +309,21 @@ export default function BooksPage() {
                         <span className="text-xs text-muted-foreground">{book.publication_year}</span>
                       )}
                     </div>
-                    {book.isbn && <p className="text-xs text-muted-foreground font-mono">{book.isbn}</p>}
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {book.description || "No description available."}
-                    </p>
                   </div>
                   <div className="flex gap-2 mt-4">
-                    <Link href={`/books/${book.id}`} className="flex-1">
-                      <Button variant="outline" size="sm" className="w-full bg-transparent">
-                        View
-                      </Button>
-                    </Link>
-                    <Link href={`/books/${book.id}/edit`}>
+                    <Button
+
+                      size="sm"
+                      className="flex-1 text-white w-full bg-transparent border-2 border-amber-400"
+                      onClick={() => openModal(book)}
+                    >
+                      View
+                    </Button>
+                    {/* <Link href={`/books/${book.id}/edit`}>
                       <Button variant="secondary" size="sm">
                         Edit
                       </Button>
-                    </Link>
+                    </Link> */}
                   </div>
                 </CardContent>
               </Card>
@@ -362,6 +378,72 @@ export default function BooksPage() {
           </div>
         )}
       </main>
+      {selectedBook && (
+        <div className="fixed inset-0 z-50  flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/80" onClick={closeModal} />
+          <div className="relative z-10 w-full max-w-3xl bg-card mx-4 rounded-lg shadow-lg border border-border"
+            style={{
+              backgroundImage: `radial-gradient(circle 500px at 50% 300px, rgba(16,185,129,0.35), transparent)`,
+            }}>
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <div>
+                <h2 className="text-xl ml-5 font-semibold">{selectedBook.title}</h2>
+                <p className="text-sm ml-5 text-muted-foreground">by {selectedBook.author}</p>
+              </div>
+              <button
+                aria-label="Close"
+                className="p-2 rounded hover:bg-amber-800"
+                onClick={closeModal}
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="md:col-span-1 ml-5">
+                <img
+                  src={selectedBook.image_url || "/placeholder.jpg"}
+                  alt={selectedBook.title}
+                  className="w-full h-75 object-cover rounded"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/placeholder.jpg"
+                  }}
+                />
+              </div>
+              <div className="md:col-span-2 space-y-2">
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline" className="text-xs">
+                    {selectedBook.genre || "Unspecified"}
+                  </Badge>
+                  {selectedBook.publication_year && (
+                    <span className="text-xs text-muted-foreground">{selectedBook.publication_year}</span>
+                  )}
+                  {selectedBook.publisher && (
+                    <span className="text-xs text-muted-foreground">{selectedBook.publisher}</span>
+                  )}
+                </div>
+                {selectedBook.isbn && (
+                  <p className="text-sm text-muted-foreground">ISBN: {selectedBook.isbn}</p>
+                )}
+                {typeof selectedBook.pages === 'number' && selectedBook.pages > 0 && (
+                  <p className="text-sm text-muted-foreground">Pages: {selectedBook.pages}</p>
+                )}
+                <p className="text-sm">
+                  <span className="font-medium">Available:</span> {selectedBook.available_quantity} / {selectedBook.quantity}
+                </p>
+                <div className="pt-2">
+                  <h3 className="font-semibold mb-1">Description</h3>
+                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                    {selectedBook.description || "No description available."}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 p-4 border-t border-border">
+              <Button className="bg-amber-400" size="sm" onClick={closeModal}>Close</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
