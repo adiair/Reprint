@@ -1,0 +1,128 @@
+import { neon } from "@neondatabase/serverless"
+import { type NextRequest, NextResponse } from "next/server"
+
+// Initialize the database connection
+const sql = neon(process.env.DATABASE_URL!)
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const search = searchParams.get("search")
+    const genre = searchParams.get("genre")
+    const author = searchParams.get("author")
+    const page = Number.parseInt(searchParams.get("page") || "1")
+    const limit = Number.parseInt(searchParams.get("limit") || "10")
+    const offset = (page - 1) * limit
+
+    // Build the WHERE clause parts
+    let whereClause = '';
+    const whereValues: any[] = [];
+    const conditions: string[] = [];
+
+    if (search) {
+      conditions.push(`(title ILIKE $${whereValues.length + 1} OR author ILIKE $${whereValues.length + 2} OR isbn ILIKE $${whereValues.length + 3})`);
+      whereValues.push(`%${search}%`, `%${search}%`, `%${search}%`);
+    }
+
+    if (genre && genre !== 'all') {
+      conditions.push(`genre ILIKE $${whereValues.length + 1}`);
+      whereValues.push(`%${genre}%`);
+    }
+
+    if (author) {
+      conditions.push(`author ILIKE $${whereValues.length + 1}`);
+      whereValues.push(`%${author}%`);
+    }
+
+    // Build the final query
+    const queryParams = [...whereValues, limit, offset];
+    const query = `
+      SELECT * FROM books 
+      ${conditions.length ? 'WHERE ' + conditions.join(' AND ') : ''}
+      ORDER BY created_at DESC 
+      LIMIT $${whereValues.length + 1} OFFSET $${whereValues.length + 2}
+    `;
+
+    // Execute the query
+    const books = await sql(query, ...queryParams);
+
+    // Get total count
+    const countQuery = `
+      SELECT COUNT(*) as count 
+      FROM books 
+      ${conditions.length ? 'WHERE ' + conditions.join(' AND ') : ''}
+    `;
+
+    const totalResult = await sql(countQuery, ...whereValues);
+    const total = Number(totalResult[0]?.count || 0);
+
+    return NextResponse.json({
+      books,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    })
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    const errorResponse = {
+      error: "Failed to fetch books",
+      details: error instanceof Error ? error.message : 'Unknown error',
+      ...(process.env.NODE_ENV === 'development' && {
+        stack: error instanceof Error ? error.stack : undefined
+      })
+    };
+    return NextResponse.json(errorResponse, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const {
+      title,
+      author,
+      isbn,
+      genre,
+      publication_year,
+      publisher,
+      pages,
+      description,
+      quantity = 1,
+      available_quantity = 1,
+    } = body
+
+    // Validate required fields
+    if (!title || !author) {
+      const errorResponse = {
+        error: "Title and author are required",
+        details: "Please provide both title and author",
+        ...(process.env.NODE_ENV === 'development' && {
+          stack: undefined,
+        })
+      };
+      return NextResponse.json(errorResponse, { status: 400 });
+    }
+
+    const result = await sql`
+      INSERT INTO books (
+        title, author, isbn, genre, publication_year, 
+        publisher, pages, description, quantity, available_quantity
+      ) VALUES (
+        ${title}, ${author}, ${isbn}, ${genre}, ${publication_year},
+        ${publisher}, ${pages}, ${description}, ${quantity}, ${available_quantity}
+      ) RETURNING *
+    `
+
+    return NextResponse.json(result[0], { status: 201 })
+  } catch (error: any) {
+    console.error("Error creating book:", error)
+    if (error.code === "23505") {
+      // Unique constraint violation
+      return NextResponse.json({ error: "ISBN already exists" }, { status: 400 })
+    }
+    return NextResponse.json({ error: "Failed to create book" }, { status: 500 })
+  }
+}

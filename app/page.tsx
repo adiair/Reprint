@@ -1,0 +1,262 @@
+"use client"
+
+import type React from "react"
+
+import { useState, useEffect } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { BookOpen, Search, Plus, Users, BarChart3, Library, LogOut } from "lucide-react"
+import Link from "next/link"
+import ProtectedRoute from "@/components/auth/protected-route"
+
+interface Book {
+  id: number
+  title: string
+  author: string
+  isbn: string
+  genre: string
+  publication_year: number
+  publisher: string
+  pages: number
+  description: string
+  quantity: number
+  available_quantity: number
+  created_at: string
+  updated_at: string
+}
+
+interface Stats {
+  totalBooks: number
+  totalQuantity: number
+  availableQuantity: number
+  genreStats: Array<{ genre: string; count: number }>
+}
+
+export default function HomePage() {
+  const [books, setBooks] = useState<Book[]>([])
+  const [stats, setStats] = useState<Stats | null>(null)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<{ email: string; role: string } | null>(null)
+
+  useEffect(() => {
+    // Get user from localStorage
+    const storedUser = localStorage.getItem("user")
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
+    }
+
+    fetchBooks()
+    fetchStats()
+  }, [])
+
+  const fetchBooks = async () => {
+    try {
+      const response = await fetch("/api/books?limit=6")
+      const data = await response.json()
+      setBooks(data.books || [])
+    } catch (error) {
+      console.error("Error fetching books:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchStats = async () => {
+    try {
+      const response = await fetch("/api/stats")
+      const data = await response.json()
+      setStats(data)
+    } catch (error) {
+      console.error("Error fetching stats:", error)
+    }
+  }
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchTerm.trim()) {
+      window.location.href = `/books?search=${encodeURIComponent(searchTerm)}`
+    }
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("user")
+    localStorage.removeItem("token")
+    window.location.href = "/auth/login"
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Library className="h-12 w-12 mx-auto mb-4 text-primary animate-pulse" />
+          <p className="text-muted-foreground">Loading Reprint...</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <ProtectedRoute>
+      <div className="min-h-screen  bg-background flex flex-col">
+        {/* Header */}
+        <header className="border-b m-auto w-5xl border-border bg-card sticky top-0 z-50">
+          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Library className="h-8 w-8 text-primary" />
+              <h1 className="text-2xl font-bold text-foreground">Reprint</h1>
+            </div>
+            <nav className="flex items-center gap-4">
+              <Link href="#features" className="text-sm text-muted-foreground hover:text-primary">Features</Link>
+              {/* <Link href="#stats" className="text-sm text-muted-foreground hover:text-primary">Statistics</Link> */}
+              {/* <Link href="#books" className="text-sm text-muted-foreground hover:text-primary">Books</Link> */}
+              <Link href="#genres" className="text-sm text-muted-foreground hover:text-primary">Genres</Link>
+              <Link href="/books/add">
+                <Button size="sm">Add Book</Button>
+              </Link>
+            </nav>
+          </div>
+        </header>
+
+        {/* Hero / Banner */}
+        <section className="relative bg-gradient-to-r from-primary/10 via-background to-background">
+          <div className="container mx-auto px-4 py-30 text-center">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground">
+              Manage Your Library <span className="text-primary">Effortlessly</span>
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+              Reprint is your professional book inventory system. Track, manage, and explore books with ease.
+            </p>
+            <div className="mt-6 flex justify-center gap-4">
+              <Link href="/books">
+                <Button size="lg">
+                  <BookOpen className="h-5 w-5 mr-2" /> Browse Books
+                </Button>
+              </Link>
+              <Link href="/books/add">
+                <Button size="lg" variant="outline">
+                  <Plus className="h-5 w-5 mr-2" /> Add Book
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section id="features" className="container m-auto w-5xl mx-auto px-4 py-16">
+          <h3 className="text-3xl font-bold text-center mb-12">Features</h3>
+          <div className="grid my-8 md:grid-cols-3 gap-8">
+            <Card className="shadow-full shadow-gray-500">
+              <CardContent className="p-6 text-center">
+                <Search className="h-10 w-10 mx-auto text-primary mb-4" />
+                <h4 className="text-lg font-semibold">Quick Search</h4>
+                <p className="text-sm text-muted-foreground mt-2">Find books by title, author, or ISBN instantly.</p>
+              </CardContent>
+            </Card>
+            <Card className="shadow-full shadow-gray-500">
+              <CardContent className="p-6 text-center">
+                <BarChart3 className="h-10 w-10 mx-auto text-primary mb-4" />
+                <h4 className="text-lg font-semibold">Detailed Stats</h4>
+                <p className="text-sm text-muted-foreground mt-2">Track books, copies, availability, and genres.</p>
+              </CardContent>
+            </Card>
+            <Card className="shadow-full shadow-gray-500">
+              <CardContent className="p-6 text-center">
+                <Library className="h-10 w-10 mx-auto text-primary mb-4" />
+                <h4 className="text-lg font-semibold">Smart Management</h4>
+                <p className="text-sm text-muted-foreground mt-2">Easily add, update, and manage your collection.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Stats */}
+        {stats && (
+          <section id="stats" className="bg-card py-16">
+            <div className="container mx-auto px-4">
+              <h3 className="text-3xl font-bold text-center mb-12">At a Glance</h3>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <Card>
+                  <CardContent className="p-6 text-center">
+                    <div className="text-3xl font-bold">{stats.totalBooks}</div>
+                    <p className="text-sm text-muted-foreground">Total Books</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-6 text-center">
+                    <div className="text-3xl font-bold">{stats.totalQuantity}</div>
+                    <p className="text-sm text-muted-foreground">Total Copies</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-6 text-center">
+                    <div className="text-3xl font-bold">{stats.availableQuantity}</div>
+                    <p className="text-sm text-muted-foreground">Available Now</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-6 text-center">
+                    <div className="text-3xl font-bold">{stats.genreStats.length}</div>
+                    <p className="text-sm text-muted-foreground">Genres</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Recent Books */}
+        {/* <section id="books" className="container mx-auto m-auto w-5xl px-4 py-16">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-3xl font-bold">Recent Additions</h3>
+            <Link href="/books">
+              <Button variant="outline" size="sm">View All</Button>
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {books.map((book) => (
+              <Card key={book.id} className="hover:shadow-md transition-shadow">
+                <CardHeader>
+                  <CardTitle className="line-clamp-2">{book.title}</CardTitle>
+                  <CardDescription>by {book.author}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground line-clamp-2">{book.description || "No description available."}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section> */}
+
+        {/* Popular Genres */}
+        {/* {stats && stats.genreStats.length > 0 && (
+          <section id="genres" className=" m-auto w-5xl py-16">
+            <div className="container mx-auto px-4">
+              <h3 className="text-3xl font-bold text-center mb-12">Popular Genres</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                {stats.genreStats.slice(0, 6).map((genre) => (
+                  <Card key={genre.genre} className="text-center bg-gray-400 hover:shadow-md transition-shadow">
+                    <CardContent className="p-2">
+                      <div className="text-2xl font-bold text-primary">{genre.count}</div>
+                      <p className="text-sm text-muted-foreground">{genre.genre}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )} */}
+
+        {/* Footer */}
+        <footer className="border-t border-border bg-card mt-16">
+          <div className="container mx-auto px-4 py-6 text-center text-sm text-muted-foreground">
+            © {new Date().getFullYear()} Reprint. All rights reserved.
+          </div>
+        </footer>
+      </div>
+
+    </ProtectedRoute>
+  )
+}
