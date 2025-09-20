@@ -15,7 +15,6 @@ export async function GET(request: NextRequest) {
     const offset = (page - 1) * limit
 
     // Build the WHERE clause parts
-    let whereClause = '';
     const whereValues: any[] = [];
     const conditions: string[] = [];
 
@@ -43,8 +42,9 @@ export async function GET(request: NextRequest) {
       LIMIT $${whereValues.length + 1} OFFSET $${whereValues.length + 2}
     `;
 
-    // Execute the query
-    const books = await sql(query, ...queryParams);
+    // Execute the query with bound parameters using sql.query
+    const booksResult = await (sql as any).query(query, queryParams);
+    const books = Array.isArray(booksResult?.rows) ? booksResult.rows : (Array.isArray(booksResult) ? booksResult : []);
 
     // Get total count
     const countQuery = `
@@ -53,8 +53,9 @@ export async function GET(request: NextRequest) {
       ${conditions.length ? 'WHERE ' + conditions.join(' AND ') : ''}
     `;
 
-    const totalResult = await sql(countQuery, ...whereValues);
-    const total = Number(totalResult[0]?.count || 0);
+    const totalResult = await (sql as any).query(countQuery, whereValues);
+    const totalRows = Array.isArray(totalResult?.rows) ? totalResult.rows : (Array.isArray(totalResult) ? totalResult : []);
+    const total = Number((totalRows && totalRows.length > 0 ? totalRows[0].count : 0) || 0);
 
     return NextResponse.json({
       books,
@@ -92,6 +93,7 @@ export async function POST(request: NextRequest) {
       description,
       quantity = 1,
       available_quantity = 1,
+      image_url,
     } = body
 
     // Validate required fields
@@ -108,11 +110,11 @@ export async function POST(request: NextRequest) {
 
     const result = await sql`
       INSERT INTO books (
-        title, author, isbn, genre, publication_year, 
-        publisher, pages, description, quantity, available_quantity
+        title, author, isbn, genre, publication_year,
+        publisher, pages, description, quantity, available_quantity, image_url
       ) VALUES (
         ${title}, ${author}, ${isbn}, ${genre}, ${publication_year},
-        ${publisher}, ${pages}, ${description}, ${quantity}, ${available_quantity}
+        ${publisher}, ${pages}, ${description}, ${quantity}, ${available_quantity}, ${image_url}
       ) RETURNING *
     `
 

@@ -26,6 +26,7 @@ interface Book {
   available_quantity: number
   created_at: string
   updated_at: string
+  image_url?: string
 }
 
 interface BooksResponse {
@@ -72,11 +73,20 @@ export default function BooksPage() {
       if (authorFilter) params.append("author", authorFilter)
 
       const response = await fetch(`/api/books?${params}`)
-      const data: BooksResponse = await response.json()
-      setBooks(data.books || [])
-      setPagination(data.pagination)
+      if (!response.ok) {
+        console.error("/api/books failed", response.status)
+        setBooks([])
+        setPagination(null)
+        return
+      }
+      const data: any = await response.json()
+      const nextBooks = Array.isArray(data?.books) ? data.books : []
+      setBooks(nextBooks)
+      setPagination(data && typeof data === 'object' ? data.pagination : null)
     } catch (error) {
       console.error("Error fetching books:", error)
+      setBooks([])
+      setPagination(null)
     } finally {
       setLoading(false)
     }
@@ -263,6 +273,16 @@ export default function BooksPage() {
                   </div>
                 </CardHeader>
                 <CardContent>
+                  <div className="mb-3">
+                    <img
+                      src={book.image_url || "/placeholder.jpg"}
+                      alt={book.title}
+                      className="w-full h-48 object-cover rounded"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/placeholder.jpg"
+                      }}
+                    />
+                  </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Badge variant="outline" className="text-xs">

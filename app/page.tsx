@@ -25,6 +25,7 @@ interface Book {
   available_quantity: number
   created_at: string
   updated_at: string
+  image_url?: string
 }
 
 interface Stats {
@@ -36,10 +37,29 @@ interface Stats {
 
 export default function HomePage() {
   const [books, setBooks] = useState<Book[]>([])
+  const [allBooks, setAllBooks] = useState<Book[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<{ email: string; role: string } | null>(null)
+
+  const fetchAllBooks = async () => {
+    try {
+      const response = await fetch(`/api/books/all`, { cache: "no-store" })
+      if (!response.ok) {
+        console.error("/api/books (all) failed", response.status)
+        setAllBooks([])
+        return
+      }
+      const data = await response.json()
+      const nextBooks = Array.isArray(data?.books) ? data.books : []
+      console.debug("Home fetch /api/books/all ->", { count: nextBooks.length })
+      setAllBooks(nextBooks)
+    } catch (error) {
+      console.error("Error fetching all books:", error)
+      setAllBooks([])
+    }
+  }
 
   useEffect(() => {
     // Get user from localStorage
@@ -48,15 +68,47 @@ export default function HomePage() {
       setUser(JSON.parse(storedUser))
     }
 
+    // initial fetch
     fetchBooks()
     fetchStats()
+    fetchAllBooks()
+
+    // refetch on focus/visibility
+    const refetch = () => {
+      fetchBooks()
+      fetchAllBooks()
+    }
+    window.addEventListener("focus", refetch)
+    window.addEventListener("books-updated", refetch as EventListener)
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'books_updated') refetch()
+    }
+    window.addEventListener("storage", onStorage)
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") refetch()
+    }
+    document.addEventListener("visibilitychange", onVisibility)
+
+    return () => {
+      window.removeEventListener("focus", refetch)
+      window.removeEventListener("books-updated", refetch as EventListener)
+      window.removeEventListener("storage", onStorage)
+      document.removeEventListener("visibilitychange", onVisibility)
+    }
   }, [])
 
   const fetchBooks = async () => {
     try {
-      const response = await fetch("/api/books?limit=6")
+      const response = await fetch("/api/books?limit=6", { cache: "no-store" })
+      if (!response.ok) {
+        console.error("/api/books failed", response.status)
+        setBooks([])
+        return
+      }
       const data = await response.json()
-      setBooks(data.books || [])
+      const nextBooks = Array.isArray(data?.books) ? data.books : []
+      console.debug("Home fetch /api/books?limit=6 ->", { count: nextBooks.length })
+      setBooks(nextBooks)
     } catch (error) {
       console.error("Error fetching books:", error)
     } finally {
@@ -67,6 +119,7 @@ export default function HomePage() {
   const fetchStats = async () => {
     try {
       const response = await fetch("/api/stats")
+      if (!response.ok) return
       const data = await response.json()
       setStats(data)
     } catch (error) {
@@ -144,6 +197,7 @@ export default function HomePage() {
           </div>
         </section>
 
+
         {/* Features */}
         <section id="features" className="container m-auto w-5xl mx-auto px-4 py-16">
           <h3 className="text-3xl font-bold text-center mb-12">Features</h3>
@@ -172,8 +226,48 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* All Books (Full List) */}
+        {/* <section id="all-books" className="container mx-auto m-auto w-5xl px-4 py-10">
+          <h3 className="text-2xl font-bold mb-6">All Books</h3>
+          {allBooks.length === 0 ? (
+            <Card className="text-center">
+              <CardContent className="py-8">
+                <p className="text-muted-foreground">No books found.</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {allBooks.map((book) => (
+                <Card key={book.id} className="hover:shadow-md transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="line-clamp-2">{book.title}</CardTitle>
+                    <CardDescription>by {book.author}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-3">
+                      <img
+                        src={book.image_url || "/placeholder.jpg"}
+                        alt={book.title}
+                        className="w-full h-40 object-cover rounded"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "/placeholder.jpg"
+                        }}
+                      />
+                    </div>
+                    {book.genre && (
+                      <p className="text-xs text-muted-foreground">{book.genre}</p>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </section> */}
+
+        
+
         {/* Stats */}
-        {stats && (
+        {/* {stats && (
           <section id="stats" className="bg-card py-16">
             <div className="container mx-auto px-4">
               <h3 className="text-3xl font-bold text-center mb-12">At a Glance</h3>
@@ -205,30 +299,53 @@ export default function HomePage() {
               </div>
             </div>
           </section>
-        )}
+        )} */}
 
         {/* Recent Books */}
-        {/* <section id="books" className="container mx-auto m-auto w-5xl px-4 py-16">
+        <section id="books" className="container mx-auto m-auto w-5xl px-4 py-16">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-3xl font-bold">Recent Additions</h3>
+            <h3 className="text-3xl font-bold">All Books</h3>
             <Link href="/books">
               <Button variant="outline" size="sm">View All</Button>
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {books.map((book) => (
-              <Card key={book.id} className="hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <CardTitle className="line-clamp-2">{book.title}</CardTitle>
-                  <CardDescription>by {book.author}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground line-clamp-2">{book.description || "No description available."}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section> */}
+          {books.length === 0 ? (
+            <Card className="text-center">
+              <CardContent className="py-10">
+                <p className="text-muted-foreground mb-4">Add your first book to see it here.</p>
+                <Link href="/books/add">
+                  <Button>
+                    <Plus className="h-4 w-4 mr-2" /> Add Book
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {books.map((book) => (
+                <Card key={book.id} className="hover:shadow-md transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="line-clamp-2">{book.title}</CardTitle>
+                    <CardDescription>by {book.author}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-3">
+                      <img
+                        src={book.image_url || "/placeholder.jpg"}
+                        alt={book.title}
+                        className="w-full h-40 object-cover rounded"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "/placeholder.jpg"
+                        }}
+                      />
+                    </div>
+                    <p className="text-sm text-muted-foreground line-clamp-2">{book.description || "No description available."}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </section>
 
         {/* Popular Genres */}
         {/* {stats && stats.genreStats.length > 0 && (

@@ -23,7 +23,7 @@ export default function AddBookPage() {
     genre: "",
     publication_year: "",
     publisher: "",
-    
+    image_url: "",
     description: "",
     quantity: "1",
     available_quantity: "1",
@@ -31,6 +31,7 @@ export default function AddBookPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  const [previewUrl, setPreviewUrl] = useState<string>("")
   const router = useRouter()
 
   const handleInputChange = (field: string, value: string) => {
@@ -45,6 +46,10 @@ export default function AddBookPage() {
         ...prev,
         available_quantity: value,
       }))
+    }
+
+    if (field === "image_url") {
+      setPreviewUrl(value)
     }
   }
 
@@ -80,15 +85,23 @@ export default function AddBookPage() {
           genre: "",
           publication_year: "",
           publisher: "",
+          image_url: "",
           description: "",
           quantity: "1",
           available_quantity: "1",
         })
+        setPreviewUrl("")
 
-        // Redirect to book detail page after 2 seconds
-        setTimeout(() => {
-          router.push(`/books/${data.id}`)
-        }, 2000)
+        // Notify other views to refresh their lists immediately
+        try {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('books_updated', String(Date.now()))
+            window.dispatchEvent(new Event('books-updated'))
+          }
+        } catch {}
+
+        // Redirect to the landing page immediately so lists refresh
+        router.push(`/`)
       } else {
         setError(data.error || "Failed to add book")
       }
@@ -226,7 +239,45 @@ export default function AddBookPage() {
                         placeholder="Publisher name"
                       />
                     </div>
-
+                    <div className="space-y-2 md:col-span-2">
+                      <Label htmlFor="image_url">Cover Image</Label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Input
+                            id="image_url"
+                            value={formData.image_url}
+                            onChange={(e) => handleInputChange("image_url", e.target.value)}
+                            placeholder="https://.../cover.jpg"
+                          />
+                          <p className="text-xs text-muted-foreground">Paste a direct image URL.</p>
+                        </div>
+                        <div className="space-y-2">
+                          <Input
+                            id="image_file"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0]
+                              if (file) {
+                                const url = URL.createObjectURL(file)
+                                setPreviewUrl(url)
+                              }
+                            }}
+                          />
+                          <p className="text-xs text-muted-foreground">Or select an image to preview (upload wiring next).</p>
+                        </div>
+                      </div>
+                      {previewUrl && (
+                        <div className="mt-2">
+                          <img
+                            src={previewUrl}
+                            alt="Cover preview"
+                            className="h-48 w-36 object-cover rounded border"
+                            onError={() => setPreviewUrl("")}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* Description */}
@@ -241,10 +292,9 @@ export default function AddBookPage() {
                     />
                   </div>
 
-                  {/* Inventory
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="quantity">Total Quantity *</Label>
+                      <Label htmlFor="quantity">Quantity *</Label>
                       <Input
                         id="quantity"
                         type="number"
@@ -252,6 +302,7 @@ export default function AddBookPage() {
                         onChange={(e) => handleInputChange("quantity", e.target.value)}
                         placeholder="1"
                         min="1"
+                        max="1000"
                         required
                       />
                     </div>
@@ -268,7 +319,7 @@ export default function AddBookPage() {
                         required
                       />
                     </div>
-                  </div> */}
+                  </div>
 
                   <div className="flex gap-3">
                     <Button type="submit" disabled={loading} className="flex-1">
