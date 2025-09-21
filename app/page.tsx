@@ -161,6 +161,7 @@ export default function HomePage() {
               <h1 className="text-xl md:text-2xl font-bold text-foreground">Reprint</h1>
             </div>
 
+
             {/* Navigation */}
             <div className="hidden md:flex gap-4">
               <Link href="#Hero" className="text-sm flex items-center gap-1 text-muted-foreground hover:text-primary">
