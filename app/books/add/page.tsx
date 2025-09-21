@@ -19,14 +19,12 @@ export default function AddBookPage() {
   const [formData, setFormData] = useState({
     title: "",
     author: "",
-    isbn: "",
     genre: "",
     publication_year: "",
     publisher: "",
     image_url: "",
     description: "",
-    quantity: "1",
-    available_quantity: "1",
+    
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -68,8 +66,7 @@ export default function AddBookPage() {
         body: JSON.stringify({
           ...formData,
           publication_year: formData.publication_year ? Number.parseInt(formData.publication_year) : null,
-          quantity: Number.parseInt(formData.quantity),
-          available_quantity: Number.parseInt(formData.available_quantity),
+          
         }),
       })
 
@@ -81,14 +78,11 @@ export default function AddBookPage() {
         setFormData({
           title: "",
           author: "",
-          isbn: "",
           genre: "",
           publication_year: "",
           publisher: "",
           image_url: "",
           description: "",
-          quantity: "1",
-          available_quantity: "1",
         })
         setPreviewUrl("")
 
@@ -195,13 +189,17 @@ export default function AddBookPage() {
 
                   {/* ISBN + Genre */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
                     <div className="space-y-2">
-                      <Label htmlFor="isbn">ISBN</Label>
+                      <Label htmlFor="publication_year">Publication Year</Label>
                       <Input
-                        id="isbn"
-                        value={formData.isbn}
-                        onChange={(e) => handleInputChange("isbn", e.target.value)}
-                        placeholder="978-0-123456-78-9"
+                        id="publication_year"
+                        type="number"
+                        value={formData.publication_year}
+                        onChange={(e) => handleInputChange("publication_year", e.target.value)}
+                        placeholder="2024"
+                        min="1000"
+                        max="2030"
                       />
                     </div>
                     <div className="space-y-2">
@@ -225,28 +223,7 @@ export default function AddBookPage() {
                   </div>
 
                   {/* Publication */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="publication_year">Publication Year</Label>
-                      <Input
-                        id="publication_year"
-                        type="number"
-                        value={formData.publication_year}
-                        onChange={(e) => handleInputChange("publication_year", e.target.value)}
-                        placeholder="2024"
-                        min="1000"
-                        max="2030"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="publisher">Publisher</Label>
-                      <Input
-                        id="publisher"
-                        value={formData.publisher}
-                        onChange={(e) => handleInputChange("publisher", e.target.value)}
-                        placeholder="Publisher name"
-                      />
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">                  
 
                     {/* Image Upload */}
                     <div className="space-y-2 md:col-span-2">

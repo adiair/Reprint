@@ -295,7 +295,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {books.map((book) => (
                 <Card key={book.id} className="relative hover:shadow-md bg-amber-500/25 transition-shadow">
                   <div className="absolute h-6 w-6 right-4 top-4 rounded-full bg-amber-400/80"></div>
@@ -311,7 +311,7 @@ export default function HomePage() {
                           "/placeholder copy.jpg"
                         }
                         alt={book.title}
-                        className="w-full h-80 sm:h-72 md:h-110 object-cover rounded"
+                        className="w-full h-80 border-5 sm:h-72 md:h-80 object-cover rounded"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src =
                             "/placeholder copy.jpg";

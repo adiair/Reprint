@@ -298,9 +298,6 @@ export default function BooksPage() {
                       <CardTitle className="text-base line-clamp-2">{book.title}</CardTitle>
                       <CardDescription className="mt-1">by {book.author}</CardDescription>
                     </div>
-                    <Badge variant="secondary" className="ml-2 text-xs">
-                      {book.available_quantity}/{book.quantity}
-                    </Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -431,16 +428,9 @@ export default function BooksPage() {
                     <span className="text-xs text-muted-foreground">{selectedBook.publisher}</span>
                   )}
                 </div>
-                {selectedBook.isbn && (
-                  <p className="text-sm text-muted-foreground">ISBN: {selectedBook.isbn}</p>
-                )}
-                {typeof selectedBook.pages === "number" && selectedBook.pages > 0 && (
-                  <p className="text-sm text-muted-foreground">Pages: {selectedBook.pages}</p>
-                )}
-                <p className="text-sm">
-                  <span className="font-medium">Available:</span>{" "}
-                  {selectedBook.available_quantity} / {selectedBook.quantity}
-                </p>
+                
+                
+                
                 <div className="pt-2">
                   <h3 className="font-semibold mb-1">Description</h3>
                   <p className="text-sm text-muted-foreground whitespace-pre-wrap">
