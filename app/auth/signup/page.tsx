@@ -80,19 +80,19 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Library className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold">Library Management</h1>
+            <Library className="h-8 w-8 text-amber-400" />
+            <h1 className="text-2xl font-bold">Reprint</h1>
           </div>
-          <p className="text-muted-foreground">Create your librarian account</p>
+          <p className="text-muted-foreground">Create your Reprint account</p>
         </div>
 
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <UserPlus className="h-5 w-5" />
+              <UserPlus className="h-5 w-5 text-amber-400" />
               Sign Up
             </CardTitle>
-            <CardDescription>Create a new account to access the library system</CardDescription>
+            <CardDescription>Create a new account</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -109,7 +109,7 @@ export default function SignupPage() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-amber-400">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -121,7 +121,7 @@ export default function SignupPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-amber-400">Password</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -144,7 +144,7 @@ export default function SignupPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword" className="text-amber-400">Confirm Password</Label>
                 <div className="relative">
                   <Input
                     id="confirmPassword"
@@ -166,7 +166,7 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full bg-amber-400" disabled={loading}>
                 {loading ? "Creating account..." : "Create Account"}
               </Button>
             </form>
@@ -174,7 +174,7 @@ export default function SignupPage() {
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 Already have an account?{" "}
-                <Link href="/auth/login" className="text-primary hover:underline">
+                <Link href="/auth/login" className="text-emerald-400 hover:underline">
                   Sign in
                 </Link>
               </p>

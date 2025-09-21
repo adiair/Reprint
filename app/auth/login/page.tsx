@@ -58,19 +58,19 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Library className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold">Library Management</h1>
+            <Library className="h-8 w-8 text-amber-400" />
+            <h1 className="text-2xl font-bold">Reprint</h1>
           </div>
-          <p className="text-muted-foreground">Sign in to access your library system</p>
+          <p className="text-muted-foreground">Sign in to access Reprint</p>
         </div>
 
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <LogIn className="h-5 w-5" />
+              <LogIn className="h-5 w-5 text-amber-400" />
               Sign In
             </CardTitle>
-            <CardDescription>Enter your credentials to access the system</CardDescription>
+            <CardDescription>Enter your credentials to access Reprint</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -81,7 +81,7 @@ export default function LoginPage() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-amber-400">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -93,7 +93,7 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-amber-400">Password</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -115,7 +115,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full bg-amber-400" disabled={loading}>
                 {loading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
@@ -123,7 +123,7 @@ export default function LoginPage() {
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link href="/auth/signup" className="text-primary hover:underline">
+                <Link href="/auth/signup" className="text-emerald-400 hover:underline">
                   Sign up
                 </Link>
               </p>
