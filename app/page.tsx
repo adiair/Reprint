@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BookOpen, Search, ChevronDown, Plus, Sparkles, BarChart3, Library, LogOut } from "lucide-react"
+import { BookOpen, Search, ChevronDown, Plus, Menu, Sparkles, BarChart3, Library, LogOut } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import ProtectedRoute from "@/components/auth/protected-route"
@@ -154,70 +154,89 @@ export default function HomePage() {
     <ProtectedRoute>
       <div className="min-h-screen bg-background flex flex-col">
         {/* Header */}
-        <header className="border-b m-auto w-6xl border-border bg-card/80 sticky top-0 z-50">
-          <div className="container mx-auto w-5xl px-4 py-4 flex items-center justify-between">
+        <header className="border-b w-full border-border bg-card/80 sticky top-0 z-50">
+          <div className="container mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Library className="h-8 w-8 text-amber-400" />
-              <h1 className="text-2xl font-bold text-foreground">Reprint</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-foreground">Reprint</h1>
             </div>
-            <div className="flex gap-4">
-              <Link href="#Hero" className="text-sm flex items-center gap-1 text-muted-foreground hover:text-primary">About  
-              <ChevronDown className="h-4 w-4"/>
+
+            {/* Navigation */}
+            <div className="hidden md:flex gap-4">
+              <Link href="#Hero" className="text-sm flex items-center gap-1 text-muted-foreground hover:text-primary">
+                About <ChevronDown className="h-4 w-4" />
               </Link>
-              <Link href="#features" className="text-sm flex items-center  text-muted-foreground hover:text-primary">
-              Features
+              <Link href="#features" className="text-sm flex items-center text-muted-foreground hover:text-primary">
+                Features
               </Link>
-              <Link href="#books" className="text-sm flex items-center  text-muted-foreground hover:text-primary">Books</Link>
+              <Link href="#books" className="text-sm flex items-center text-muted-foreground hover:text-primary">
+                Books
+              </Link>
             </div>
-            <nav className="flex items-center gap-4">
+
+            <nav className="hidden md:flex items-center gap-4">
               <Link href="/books/add">
                 <Button size="sm" className="bg-amber-400">Add Book</Button>
               </Link>
             </nav>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Button size="sm" variant="outline">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
         </header>
 
-        <section className="relative mt-20 w-6xl m-auto rounded-md border-amber-400">
-          <div className="absolute m-auto z-45 left-101 top-5 flex justify-center items-center gap-3 rounded-full p-1 w-80 border-2 border-amber-400 mt-5">
-            <Sparkles className="h-4 w-4 text-emerald-400 rotate-5" />
-            Trusted by more than 500+ users</div>
-          <div className="relative w-full h-52 md:h-[24rem] mr-2 lg:h-[35rem]">
+        {/* Hero Image Section */}
+        <section className="relative mt-10 md:mt-20 max-w-6xl w-full mx-auto rounded-md border-amber-400 px-4">
+          <div className="absolute left-1/2 -translate-x-1/2 z-40 -top-5 sm:top-4 md:top-6 flex justify-center items-center gap-1 sm:gap-3 rounded-full px-3 py-1 max-w-[75%] sm:max-w-[90%] md:w-80 border-2 border-amber-400 backdrop-blur">
+            <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-400 rotate-5" />
+            <span className="text-[8px] sm:text-xs md:text-sm text-foreground">
+              Trusted by more than 500+ users
+            </span>
+          </div>
+
+          <div className="relative w-full h-40 sm:h-52 md:h-[24rem] lg:h-[35rem]">
             <Image
               src="/reprint 2 copy.png"
               alt="Cover Image"
               fill
               priority
               sizes="100vw"
-              className="object-cover"
+              className="object-cover rounded"
             />
           </div>
         </section>
 
         {/* Hero / Banner */}
-        <section id="Hero" className="relative ">
+        <section id="Hero" className="relative mt-12 md:mt-20">
           <div className="absolute inset-0" />
-          <div className="relative border-t-2 border-b-2 border-dashed border-gray-400/50 container mx-auto px-4 py-30 text-center"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: "60px 60px",
-          }}>
-            <h2 className=" text-4xl md:text-5xl font-extrabold text-foreground">
-              Manage Your Library <span className="text-amber-500 ">Effortlessly</span>
+          <div
+            className="relative border-t-2 border-b-2 border-dashed border-gray-400/50 container mx-auto px-4 py-16 md:py-30 text-center"
+            style={{
+              backgroundImage: `
+          linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+        `,
+              backgroundSize: "60px 60px",
+            }}
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground">
+              Manage Your Library <span className="text-amber-500">Effortlessly</span>
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Reprint is your professional book inventory system. Track, manage, and explore books with ease.
             </p>
-            <div className="mt-6 flex justify-center gap-4">
+            <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
               <Link href="/books">
-                <Button size="lg" className="bg-amber-400">
+                <Button size="lg" className="bg-amber-400 w-full sm:w-auto">
                   <BookOpen className="h-5 w-5 mr-2" /> Browse Books
                 </Button>
               </Link>
               <Link href="/books/add">
-                <Button size="lg" className="border-2 border-amber-400 bg-black text-white">
+                <Button size="lg" className="border-2 border-amber-400 bg-black text-white w-full sm:w-auto">
                   <Plus className="h-5 w-5 mr-2" /> Add Book
                 </Button>
               </Link>
@@ -225,19 +244,14 @@ export default function HomePage() {
           </div>
         </section>
 
-
-
-
-
-
         {/* Features */}
-        <section id="features" className="container m-auto w-5xl mx-auto px-4 py-16">
-          <h3 className="text-3xl font-bold text-center mb-12">Features</h3>
-          <div className="grid my-8 md:grid-cols-3 gap-8">
+        <section id="features" className="container max-w-6xl mx-auto px-4 py-16">
+          <h3 className="text-2xl sm:text-3xl font-bold text-center mb-12">Features</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <Card className="shadow-full shadow-gray-500">
               <CardContent className="p-6 text-center">
                 <Search className="h-10 w-10 mx-auto text-amber-400 mb-4" />
-                <h4 className="text-lg font-semibold ">Quick Search</h4>
+                <h4 className="text-lg font-semibold">Quick Search</h4>
                 <p className="text-sm text-muted-foreground mt-2">Find books by title, author, or ISBN instantly.</p>
               </CardContent>
             </Card>
@@ -258,19 +272,17 @@ export default function HomePage() {
           </div>
         </section>
 
-
-
-
-        
-
-        {/* All Total Books */}
-        <section id="books" className="container mx-auto m-auto w-5xl px-4 py-16">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="text-3xl font-bold">All Books</h3>
+        {/* Books */}
+        <section id="books" className="container mx-auto max-w-6xl px-4 py-16">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <h3 className="text-2xl sm:text-3xl font-bold">All Books</h3>
             <Link href="/books">
-              <Button className="border-2 bg-black border-amber-400 text-amber-400" size="sm">View All</Button>
+              <Button className="border-2 bg-black border-amber-400 text-amber-400" size="sm">
+                View All
+              </Button>
             </Link>
           </div>
+
           {books.length === 0 ? (
             <Card className="text-center">
               <CardContent className="py-10">
@@ -283,9 +295,9 @@ export default function HomePage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {books.map((book) => (
-                <Card key={book.id} className="relative hover:shadow-md bg-amber-500/15 transition-shadow">
+                <Card key={book.id} className="relative hover:shadow-md bg-amber-500/25 transition-shadow">
                   <div className="absolute h-6 w-6 right-4 top-4 rounded-full bg-amber-400/80"></div>
                   <CardHeader>
                     <CardTitle className="line-clamp-2 text-primary">{book.title}</CardTitle>
@@ -294,11 +306,15 @@ export default function HomePage() {
                   <CardContent>
                     <div className="mb-3">
                       <img
-                        src={book.image_url || "/https://t3.ftcdn.net/jpg/06/13/47/20/360_F_613472072_YSkmDRTLl6twoSpkjXSYkCFE7kNCzet0.jpg"}
+                        src={
+                          book.image_url ||
+                          "/placeholder copy.jpg"
+                        }
                         alt={book.title}
-                        className="w-full h-80 object-cover rounded"
+                        className="w-full h-80 sm:h-72 md:h-110 object-cover rounded"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = "/https://t3.ftcdn.net/jpg/06/13/47/20/360_F_613472072_YSkmDRTLl6twoSpkjXSYkCFE7kNCzet0.jpg"
+                          (e.target as HTMLImageElement).src =
+                            "/placeholder copy.jpg";
                         }}
                       />
                     </div>
@@ -309,33 +325,13 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* Popular Genres */}
-        {/* {stats && stats.genreStats.length > 0 && (
-          <section id="genres" className=" m-auto w-5xl py-16">
-            <div className="container mx-auto px-4">
-              <h3 className="text-3xl font-bold text-center mb-12">Popular Genres</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                {stats.genreStats.slice(0, 6).map((genre) => (
-                  <Card key={genre.genre} className="text-center bg-gray-400 hover:shadow-md transition-shadow">
-                    <CardContent className="p-2">
-                      <div className="text-2xl font-bold text-primary">{genre.count}</div>
-                      <p className="text-sm text-muted-foreground">{genre.genre}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-        )} */}
-
         {/* Footer */}
         <footer className="border-t border-border bg-card mt-16">
-          <div className="container mx-auto px-4 py-6 text-center text-sm text-muted-foreground">
+          <div className="container mx-auto px-4 py-6 text-center text-xs sm:text-sm text-muted-foreground">
             © {new Date().getFullYear()} Reprint. All rights reserved.
           </div>
         </footer>
       </div>
-
     </ProtectedRoute>
   )
 }

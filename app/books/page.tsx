@@ -121,33 +121,38 @@ export default function BooksPage() {
   }
 
   return (
-    <div className="min-h-screen w-6xl m-auto bg-background"
+    <div
+      className="min-h-screen w-full max-w-6xl mx-auto bg-background"
       style={{
         background: "#000000",
         backgroundImage: `
-        radial-gradient(circle, rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px)
-      `,
+      radial-gradient(circle, rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px)
+    `,
         backgroundSize: "30px 30px",
         backgroundPosition: "0 0",
-      }}>
+      }}
+    >
       {/* Header */}
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            {/* Back + Title */}
+            <div className="flex items-center gap-3 w-full sm:w-auto">
               <Link href="/">
-                <Button variant="ghost" className="text-emerald-400" size="lg">
-                  <ArrowLeft className="h-7 w-7 text-emerald-400 " />
+                <Button variant="ghost" className="text-emerald-400" size="sm">
+                  <ArrowLeft className="h-5 w-5 sm:h-7 sm:w-7 text-emerald-400" />
                   Back
                 </Button>
               </Link>
-              <div className="flex ml-10 items-center gap-2">
-                <Library className="h-6 w-6 text-amber-400" />
-                <h1 className="text-xl  font-bold">Book Collection</h1>
+              <div className="flex items-center gap-2 sm:ml-10">
+                <Library className="h-5 w-5 sm:h-6 sm:w-6 text-amber-400" />
+                <h1 className="text-lg sm:text-xl font-bold">Book Collection</h1>
               </div>
             </div>
-            <Link href="/books/add">
-              <Button className="bg-amber-400">
+
+            {/* Add Button */}
+            <Link href="/books/add" className="w-full sm:w-auto">
+              <Button className="bg-amber-400 w-full sm:w-auto">
                 <Plus className="h-4 w-4 mr-2" />
                 Add New Book
               </Button>
@@ -156,8 +161,9 @@ export default function BooksPage() {
         </div>
       </header>
 
+      {/* Main */}
       <main className="container mx-auto px-4 py-4">
-        {/* Search and Filters */}
+        {/* Search + Filters */}
         <Card className="mb-8 border-2 border-amber-400/40">
           <CardHeader>
             <CardTitle className="flex text-md items-center gap-2">
@@ -167,21 +173,24 @@ export default function BooksPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSearch} className="space-y-4">
-              <div className="flex gap-1">
+              {/* Search Row */}
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Input
                   placeholder="Search by title, author..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="flex-1"
                 />
-                <Button type="submit">
-                  <Search className="h-2 w-2 mr-2" />
+                <Button type="submit" className="w-full sm:w-auto">
+                  <Search className="h-3 w-3 mr-2" />
                   Search
                 </Button>
               </div>
-              <div className="flex gap-1">
+
+              {/* Filters Row */}
+              <div className="flex flex-col md:flex-row gap-2">
                 <Select value={genreFilter} onValueChange={setGenreFilter}>
-                  <SelectTrigger className="w-30">
+                  <SelectTrigger className="w-full md:w-40">
                     <SelectValue placeholder="Filter by genre" />
                   </SelectTrigger>
                   <SelectContent>
@@ -194,14 +203,21 @@ export default function BooksPage() {
                     <SelectItem value="Biography">Biography</SelectItem>
                   </SelectContent>
                 </Select>
+
                 <Input
                   placeholder="Filter by author"
                   value={authorFilter}
                   onChange={(e) => setAuthorFilter(e.target.value)}
-                  className="w-31"
+                  className="w-full md:w-40"
                 />
-                <Button type="button" variant="outline" onClick={clearFilters}>
-                  <Filter className="h-2 w-2 mr-2" />
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={clearFilters}
+                  className="w-full md:w-auto"
+                >
+                  <Filter className="h-3 w-3 mr-2" />
                   Clear Filters
                 </Button>
               </div>
@@ -209,10 +225,10 @@ export default function BooksPage() {
           </CardContent>
         </Card>
 
-        {/* Results */}
+        {/* Pagination (Top) */}
         {pagination && (
-          <div className="flex items-center justify-between mb-6">
-            <p className="text-muted-foreground">
+          <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-3">
+            <p className="text-sm text-muted-foreground text-center sm:text-left">
               Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
               {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} books
             </p>
@@ -225,9 +241,7 @@ export default function BooksPage() {
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <span className="text-sm">
-                Page {pagination.page} of {pagination.pages}
-              </span>
+              <span className="text-sm">Page {pagination.page} of {pagination.pages}</span>
               <Button
                 variant="outline"
                 size="sm"
@@ -242,7 +256,7 @@ export default function BooksPage() {
 
         {/* Books Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
               <Card key={i} className="animate-pulse">
                 <CardHeader>
@@ -275,7 +289,7 @@ export default function BooksPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {books.map((book) => (
               <Card key={book.id} className="hover:shadow-md bg-amber-700/30 transition-shadow">
                 <CardHeader>
@@ -292,38 +306,30 @@ export default function BooksPage() {
                 <CardContent>
                   <div className="mb-3">
                     <img
-                      src={book.image_url || "/placeholder.jpg"}
+                      src={book.image_url || "/placeholder copy.jpg"}
                       alt={book.title}
-                      className="w-full h-70 object-cover rounded"
+                      className="w-full border-4 border-black h-80 sm:h-74 md:h-80 object-cover rounded"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = "/placeholder.jpg"
+                        (e.target as HTMLImageElement).src = "/placeholder copy.jpg"
                       }}
                     />
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs">
-                        {book.genre || "Unspecified"}
-                      </Badge>
-                      {book.publication_year && (
-                        <span className="text-xs text-muted-foreground">{book.publication_year}</span>
-                      )}
-                    </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      {book.genre || "Unspecified"}
+                    </Badge>
+                    {book.publication_year && (
+                      <span className="text-xs text-muted-foreground">{book.publication_year}</span>
+                    )}
                   </div>
                   <div className="flex gap-2 mt-4">
                     <Button
-
                       size="sm"
                       className="flex-1 text-white w-full bg-transparent border-2 border-amber-400"
                       onClick={() => openModal(book)}
                     >
                       View
                     </Button>
-                    {/* <Link href={`/books/${book.id}/edit`}>
-                      <Button variant="secondary" size="sm">
-                        Edit
-                      </Button>
-                    </Link> */}
                   </div>
                 </CardContent>
               </Card>
@@ -331,10 +337,10 @@ export default function BooksPage() {
           </div>
         )}
 
-        {/* Pagination */}
+        {/* Pagination (Bottom) */}
         {pagination && pagination.pages > 1 && (
-          <div className="flex justify-center mt-8">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row justify-center sm:justify-between mt-8 gap-4">
+            <div className="flex items-center gap-2 justify-center sm:justify-start">
               <Button variant="outline" onClick={() => handlePageChange(1)} disabled={currentPage === 1}>
                 First
               </Button>
@@ -378,17 +384,21 @@ export default function BooksPage() {
           </div>
         )}
       </main>
+
+      {/* Modal */}
       {selectedBook && (
-        <div className="fixed inset-0 z-50  flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-2 sm:px-4">
           <div className="absolute inset-0 bg-black/80" onClick={closeModal} />
-          <div className="relative z-10 w-full max-w-3xl bg-card mx-4 rounded-lg shadow-lg border border-border"
+          <div
+            className="relative z-10 w-full max-w-3xl bg-card mx-auto rounded-lg shadow-lg border border-border"
             style={{
               backgroundImage: `radial-gradient(circle 500px at 50% 300px, rgba(16,185,129,0.35), transparent)`,
-            }}>
+            }}
+          >
             <div className="flex items-center justify-between p-4 border-b border-border">
               <div>
-                <h2 className="text-xl ml-5 font-semibold">{selectedBook.title}</h2>
-                <p className="text-sm ml-5 text-muted-foreground">by {selectedBook.author}</p>
+                <h2 className="text-lg sm:text-xl font-semibold">{selectedBook.title}</h2>
+                <p className="text-sm text-muted-foreground">by {selectedBook.author}</p>
               </div>
               <button
                 aria-label="Close"
@@ -399,13 +409,13 @@ export default function BooksPage() {
               </button>
             </div>
             <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="md:col-span-1 ml-5">
+              <div>
                 <img
-                  src={selectedBook.image_url || "/placeholder.jpg"}
+                  src={selectedBook.image_url || "/placeholder copy.jpg"}
                   alt={selectedBook.title}
-                  className="w-full h-75 object-cover rounded"
+                  className="w-full h-84 border-4 border-white sm:h-85 object-cover rounded"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = "/placeholder.jpg"
+                    (e.target as HTMLImageElement).src = "/placeholder copy.jpg"
                   }}
                 />
               </div>
@@ -424,11 +434,12 @@ export default function BooksPage() {
                 {selectedBook.isbn && (
                   <p className="text-sm text-muted-foreground">ISBN: {selectedBook.isbn}</p>
                 )}
-                {typeof selectedBook.pages === 'number' && selectedBook.pages > 0 && (
+                {typeof selectedBook.pages === "number" && selectedBook.pages > 0 && (
                   <p className="text-sm text-muted-foreground">Pages: {selectedBook.pages}</p>
                 )}
                 <p className="text-sm">
-                  <span className="font-medium">Available:</span> {selectedBook.available_quantity} / {selectedBook.quantity}
+                  <span className="font-medium">Available:</span>{" "}
+                  {selectedBook.available_quantity} / {selectedBook.quantity}
                 </p>
                 <div className="pt-2">
                   <h3 className="font-semibold mb-1">Description</h3>
@@ -439,11 +450,14 @@ export default function BooksPage() {
               </div>
             </div>
             <div className="flex justify-end gap-2 p-4 border-t border-border">
-              <Button className="bg-amber-400" size="sm" onClick={closeModal}>Close</Button>
+              <Button className="bg-amber-400" size="sm" onClick={closeModal}>
+                Close
+              </Button>
             </div>
           </div>
         </div>
       )}
     </div>
+
   )
 }
