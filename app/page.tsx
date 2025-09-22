@@ -227,7 +227,7 @@ export default function HomePage() {
             Your Personal Book <span className="text-amber-500">Encyclopedia</span>
             </h2>
             <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Reprint is a fullstack book encyclopedia where users can add books by uploading images and instantly fetch summaries.
+            Reprint is a book encyclopedia where users can add books by uploading images and instantly fetch summaries.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
               <Link href="/books">
