@@ -328,7 +328,7 @@ export default function HomePage() {
         {/* Footer */}
         <footer className="border-t border-border bg-card mt-16">
           <div className="container mx-auto px-4 py-6 text-center text-xs sm:text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Reprint. All rights reserved.
+            © {new Date().getFullYear()} Reprint. Developed by <a href="https://adiair.vercel.app/">adiair</a>@.
           </div>
         </footer>
       </div>
