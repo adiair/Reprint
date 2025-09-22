@@ -134,11 +134,9 @@ export default function LoginPage() {
               <h4 className="text-sm font-medium mb-2">Demo Credentials:</h4>
               <div className="text-xs text-muted-foreground space-y-1">
                 <p>
-                  <strong>Admin:</strong> admin@library.com / admin123
+                  <strong>Example:</strong> admin@library.com / admin123
                 </p>
-                <p>
-                  <strong>Librarian:</strong> librarian@library.com / librarian123
-                </p>
+                
               </div>
             </div>
           </CardContent>
