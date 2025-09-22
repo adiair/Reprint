@@ -256,7 +256,7 @@ export default function BooksPage() {
 
         {/* Books Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
               <Card key={i} className="animate-pulse">
                 <CardHeader>
@@ -289,7 +289,7 @@ export default function BooksPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {books.map((book) => (
               <Card key={book.id} className="hover:shadow-md bg-amber-700/30 transition-shadow">
                 <CardHeader>
@@ -305,7 +305,7 @@ export default function BooksPage() {
                     <img
                       src={book.image_url || "/placeholder copy.jpg"}
                       alt={book.title}
-                      className="w-full border-4 border-black h-80 sm:h-74 md:h-80 object-cover rounded"
+                      className="w-full border-4 border-black aspect-[2/3] object-cover rounded"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = "/placeholder copy.jpg"
                       }}
@@ -387,7 +387,7 @@ export default function BooksPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center px-2 sm:px-4">
           <div className="absolute inset-0 bg-black/80" onClick={closeModal} />
           <div
-            className="relative z-10 w-full max-w-3xl bg-card mx-auto rounded-lg shadow-lg border border-border"
+            className="relative z-10 w-full max-w-3xl bg-card mx-auto rounded-lg shadow-lg border border-border max-h-[85vh] overflow-y-auto"
             style={{
               backgroundImage: `radial-gradient(circle 500px at 50% 300px, rgba(16,185,129,0.35), transparent)`,
             }}
@@ -410,7 +410,7 @@ export default function BooksPage() {
                 <img
                   src={selectedBook.image_url || "/placeholder copy.jpg"}
                   alt={selectedBook.title}
-                  className="w-full h-84 border-4 border-white sm:h-85 object-cover rounded"
+                  className="w-full max-h-[60vh] border-4 border-white object-cover rounded"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = "/placeholder copy.jpg"
                   }}
@@ -433,7 +433,7 @@ export default function BooksPage() {
                 
                 <div className="pt-2">
                   <h3 className="font-semibold mb-1">Description</h3>
-                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                  <p className="text-sm sm:text-base text-muted-foreground whitespace-pre-wrap">
                     {selectedBook.description || "No description available."}
                   </p>
                 </div>
