@@ -85,14 +85,12 @@ export async function POST(request: NextRequest) {
     const {
       title,
       author,
-      isbn,
+      
       genre,
       publication_year,
-      publisher,
-      pages,
+      
       description,
-      quantity = 1,
-      available_quantity = 1,
+      
       image_url,
     } = body
 
@@ -110,11 +108,11 @@ export async function POST(request: NextRequest) {
 
     const result = await sql`
       INSERT INTO books (
-        title, author, isbn, genre, publication_year,
-        publisher, pages, description, quantity, available_quantity, image_url
+        title, author, genre, publication_year,
+         description, image_url
       ) VALUES (
-        ${title}, ${author}, ${isbn}, ${genre}, ${publication_year},
-        ${publisher}, ${pages}, ${description}, ${quantity}, ${available_quantity}, ${image_url}
+        ${title}, ${author}, ${genre}, ${publication_year},
+         ${description}, ${image_url}
       ) RETURNING *
     `
 

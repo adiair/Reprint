@@ -224,10 +224,10 @@ export default function HomePage() {
             }}
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground">
-              Manage Your Library <span className="text-amber-500">Effortlessly</span>
+            Your Personal Book <span className="text-amber-500">Encyclopedia</span>
             </h2>
             <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Reprint is your professional book inventory system. Track, manage, and explore books with ease.
+            Reprint is a fullstack book encyclopedia where users can add books by uploading images and instantly fetch summaries.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
               <Link href="/books">
@@ -294,7 +294,7 @@ export default function HomePage() {
                 </Link>
               </CardContent>
             </Card>
-          ) : (
+            ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {books.map((book) => (
                 <Card key={book.id} className="relative hover:shadow-md bg-amber-500/25 transition-shadow">
