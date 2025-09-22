@@ -26,14 +26,12 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const {
       title,
       author,
-      isbn,
+      
       genre,
       publication_year,
-      publisher,
-      pages,
+      
       description,
-      quantity,
-      available_quantity,
+      
     } = body
 
     // Check if book exists
@@ -46,14 +44,10 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       UPDATE books SET
         title = ${title},
         author = ${author},
-        isbn = ${isbn},
         genre = ${genre},
         publication_year = ${publication_year},
-        publisher = ${publisher},
-        pages = ${pages},
         description = ${description},
-        quantity = ${quantity},
-        available_quantity = ${available_quantity},
+    
         updated_at = CURRENT_TIMESTAMP
       WHERE id = ${id}
       RETURNING *

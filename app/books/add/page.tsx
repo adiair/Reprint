@@ -21,7 +21,6 @@ export default function AddBookPage() {
     author: "",
     genre: "",
     publication_year: "",
-    publisher: "",
     image_url: "",
     description: "",
     
@@ -80,7 +79,6 @@ export default function AddBookPage() {
           author: "",
           genre: "",
           publication_year: "",
-          publisher: "",
           image_url: "",
           description: "",
         })
@@ -254,7 +252,7 @@ export default function AddBookPage() {
                             }}
                           />
                           <p className="text-xs text-muted-foreground">
-                            Or select an image to preview (upload wiring next).
+                            Or select an image to preview.
                           </p>
                         </div>
                       </div>
