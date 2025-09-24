@@ -47,7 +47,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         genre = ${genre},
         publication_year = ${publication_year},
         description = ${description},
-    
         updated_at = CURRENT_TIMESTAMP
       WHERE id = ${id}
       RETURNING *

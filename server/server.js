@@ -35,9 +35,9 @@ app.get("/api/books", async (req, res) => {
     let paramIndex = 1
 
     if (search) {
-      query += ` AND (title ILIKE $${paramIndex} OR author ILIKE $${paramIndex + 1} OR isbn ILIKE $${paramIndex + 2})`
-      params.push(`%${search}%`, `%${search}%`, `%${search}%`)
-      paramIndex += 3
+      query += ` AND (title ILIKE $${paramIndex} OR author ILIKE $${paramIndex + 1})`
+      params.push(`%${search}%`, `%${search}%`)
+      paramIndex += 2
     }
 
     if (genre) {
@@ -120,14 +120,14 @@ app.post("/api/books", async (req, res) => {
     const {
       title,
       author,
-      isbn,
+      // isbn,
       genre,
       publication_year,
-      publisher,
-      pages,
+      // publisher,
+      // pages,
       description,
-      quantity = 1,
-      available_quantity = 1,
+      // quantity = 1,
+      // available_quantity = 1,
     } = req.body
 
     // Validate required fields
@@ -137,11 +137,11 @@ app.post("/api/books", async (req, res) => {
 
     const result = await sql`
       INSERT INTO books (
-        title, author, isbn, genre, publication_year, 
-        publisher, pages, description, quantity, available_quantity
+        title, author, genre, publication_year, 
+        description
       ) VALUES (
-        ${title}, ${author}, ${isbn}, ${genre}, ${publication_year},
-        ${publisher}, ${pages}, ${description}, ${quantity}, ${available_quantity}
+        ${title}, ${author}, ${genre}, ${publication_year},
+        ${description}
       ) RETURNING *
     `
 
@@ -150,7 +150,7 @@ app.post("/api/books", async (req, res) => {
     console.error("Error creating book:", error)
     if (error.code === "23505") {
       // Unique constraint violation
-      res.status(400).json({ error: "ISBN already exists" })
+      res.status(400).json({ error: "Book already exists" })
     } else {
       res.status(500).json({ error: "Failed to create book" })
     }
@@ -164,14 +164,9 @@ app.put("/api/books/:id", async (req, res) => {
     const {
       title,
       author,
-      isbn,
       genre,
       publication_year,
-      publisher,
-      pages,
       description,
-      quantity,
-      available_quantity,
     } = req.body
 
     // Check if book exists
@@ -184,14 +179,9 @@ app.put("/api/books/:id", async (req, res) => {
       UPDATE books SET
         title = ${title},
         author = ${author},
-        isbn = ${isbn},
         genre = ${genre},
         publication_year = ${publication_year},
-        publisher = ${publisher},
-        pages = ${pages},
         description = ${description},
-        quantity = ${quantity},
-        available_quantity = ${available_quantity},
         updated_at = CURRENT_TIMESTAMP
       WHERE id = ${id}
       RETURNING *
@@ -202,7 +192,7 @@ app.put("/api/books/:id", async (req, res) => {
     console.error("Error updating book:", error)
     if (error.code === "23505") {
       // Unique constraint violation
-      res.status(400).json({ error: "ISBN already exists" })
+      res.status(400).json({ error: "Book already exists" })
     } else {
       res.status(500).json({ error: "Failed to update book" })
     }
@@ -232,8 +222,6 @@ app.delete("/api/books/:id", async (req, res) => {
 app.get("/api/stats", async (req, res) => {
   try {
     const totalBooks = await sql`SELECT COUNT(*) as count FROM books`
-    const totalQuantity = await sql`SELECT SUM(quantity) as total FROM books`
-    const availableQuantity = await sql`SELECT SUM(available_quantity) as available FROM books`
     const genreStats = await sql`
       SELECT genre, COUNT(*) as count 
       FROM books 
@@ -244,8 +232,6 @@ app.get("/api/stats", async (req, res) => {
 
     res.json({
       totalBooks: Number.parseInt(totalBooks[0].count),
-      totalQuantity: Number.parseInt(totalQuantity[0].total) || 0,
-      availableQuantity: Number.parseInt(availableQuantity[0].available) || 0,
       genreStats,
     })
   } catch (error) {
@@ -256,8 +242,7 @@ app.get("/api/stats", async (req, res) => {
 
 // Authentication endpoints (manual authentication)
 const users = [
-  { email: "admin@library.com", password: "admin123", role: "admin" },
-  { email: "librarian@library.com", password: "librarian123", role: "librarian" },
+  { email: "admin@adiair.com", password: "1Bt52o7x3cO4C42", role: "admin" },
 ]
 
 app.post("/api/auth/login", (req, res) => {
@@ -287,7 +272,7 @@ app.post("/api/auth/signup", (req, res) => {
   }
 
   // Add new user (in a real app, you'd hash the password)
-  const newUser = { email, password, role: "librarian" }
+  const newUser = { email, password, role: "user" }
   users.push(newUser)
 
   res.json({
