@@ -178,6 +178,15 @@ export default function HomePage() {
               <Link href="/books/add">
                 <Button size="sm" className="bg-amber-400">Add Book</Button>
               </Link>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={handleLogout}
+                className="flex items-center gap-1"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </Button>
             </nav>
 
             {/* Mobile Menu Button */}
