@@ -2,8 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 
 // In-memory user storage (in a real app, this would be in a database)
 const users = [
-  { email: "admin@library.com", password: "admin123", role: "admin" },
-  { email: "librarian@library.com", password: "librarian123", role: "librarian" },
+  { email: "admin@adiair.com", password: "1Bt52o7x3cO4C42", role: "admin" },
 ]
 
 export async function POST(request: NextRequest) {
@@ -17,7 +16,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Add new user (in a real app, you'd hash the password)
-    const newUser = { email, password, role: "librarian" as const }
+    const newUser = { email, password, role: "admin" as const }
     users.push(newUser)
 
     return NextResponse.json({

@@ -2,8 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 
 // Manual authentication with hardcoded users
 const users = [
-  { email: "admin@library.com", password: "admin123", role: "admin" },
-  { email: "librarian@library.com", password: "librarian123", role: "librarian" },
+  { email: "admin@adiair.com", password: "1Bt52o7x3cO4C42", role: "admin" },
 ]
 
 export async function POST(request: NextRequest) {

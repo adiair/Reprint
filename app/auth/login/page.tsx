@@ -85,7 +85,7 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@library.com"
+                  placeholder="demo@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -134,7 +134,7 @@ export default function LoginPage() {
               <h4 className="text-sm font-medium mb-2">Demo Credentials:</h4>
               <div className="text-xs text-muted-foreground space-y-1">
                 <p>
-                  <strong>Example:</strong> admin@library.com / admin123
+                  <strong>Example:</strong> admin@adiair.com / 1Bt52o7x3cO4C42
                 </p>
                 
               </div>
