@@ -163,67 +163,7 @@ export default function BooksPage() {
 
       {/* Main */}
       <main className="container mx-auto px-4 py-4">
-        {/* Search + Filters */}
-        <Card className="mb-8 border-2 border-amber-400/40">
-          <CardHeader>
-            <CardTitle className="flex text-md items-center gap-2">
-              <Search className="h-3 w-3" />
-              Search & Filter
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSearch} className="space-y-4">
-              {/* Search Row */}
-              <div className="flex flex-col sm:flex-row gap-2">
-                <Input
-                  placeholder="Search by title, author..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="flex-1"
-                />
-                <Button type="submit" className="w-full sm:w-auto">
-                  <Search className="h-3 w-3 mr-2" />
-                  Search
-                </Button>
-              </div>
-
-              {/* Filters Row */}
-              <div className="flex flex-col md:flex-row gap-2">
-                <Select value={genreFilter} onValueChange={setGenreFilter}>
-                  <SelectTrigger className="w-full md:w-40">
-                    <SelectValue placeholder="Filter by genre" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Genres</SelectItem>
-                    <SelectItem value="Fiction">Fiction</SelectItem>
-                    <SelectItem value="Romance">Romance</SelectItem>
-                    <SelectItem value="Dystopian Fiction">Dystopian Fiction</SelectItem>
-                    <SelectItem value="Science Fiction">Science Fiction</SelectItem>
-                    <SelectItem value="Mystery">Mystery</SelectItem>
-                    <SelectItem value="Biography">Biography</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Input
-                  placeholder="Filter by author"
-                  value={authorFilter}
-                  onChange={(e) => setAuthorFilter(e.target.value)}
-                  className="w-full md:w-40"
-                />
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={clearFilters}
-                  className="w-full md:w-auto"
-                >
-                  <Filter className="h-3 w-3 mr-2" />
-                  Clear Filters
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+        
 
         {/* Pagination (Top) */}
         {pagination && (
