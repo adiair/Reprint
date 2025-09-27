@@ -37,14 +37,6 @@ export default function AddBookPage() {
       [field]: value,
     }))
 
-    // Auto-update available quantity when quantity changes
-    if (field === "quantity") {
-      setFormData((prev) => ({
-        ...prev,
-        available_quantity: value,
-      }))
-    }
-
     if (field === "image_url") {
       setPreviewUrl(value)
     }

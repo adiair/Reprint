@@ -20,8 +20,6 @@ interface Book {
   publisher: string
   pages: number
   description: string
-  quantity: number
-  available_quantity: number
   created_at: string
   updated_at: string
   image_url?: string
@@ -29,8 +27,6 @@ interface Book {
 
 interface Stats {
   totalBooks: number
-  totalQuantity: number
-  availableQuantity: number
   genreStats: Array<{ genre: string; count: number }>
 }
 

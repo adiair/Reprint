@@ -19,8 +19,8 @@ export async function GET(request: NextRequest) {
     const conditions: string[] = [];
 
     if (search) {
-      conditions.push(`(title ILIKE $${whereValues.length + 1} OR author ILIKE $${whereValues.length + 2} OR isbn ILIKE $${whereValues.length + 3})`);
-      whereValues.push(`%${search}%`, `%${search}%`, `%${search}%`);
+      conditions.push(`(title ILIKE $${whereValues.length + 1} OR author ILIKE $${whereValues.length + 2})`);
+      whereValues.push(`%${search}%`, `%${search}%`);
     }
 
     if (genre && genre !== 'all') {
