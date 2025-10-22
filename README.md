@@ -65,19 +65,6 @@ API Endpoints 🔗
 
 ---
 
-Contributing 🤝
-
-Fork the repo
-
-Create a branch: git checkout -b feature-name
-
-Make changes & commit: git commit -m "Add feature"
-
-Push branch: git push origin feature-name
-
-Open a Pull Request
-
----
 
 License 📄
 
