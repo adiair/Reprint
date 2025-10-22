@@ -25,13 +25,13 @@ Reprint is a **full-stack web application** that serves as a book encyclopedia. 
 ## Installation ⚡
 
 1. Clone the repo:  
-   ```bash
-   git clone https://github.com/your-username/reprint.git
-   cd reprint
-  
+```
+git clone https://github.com/your-username/reprint.git
+cd reprint
+```  
 2. Install dependencies:
-  ```
-  npm install
+```
+npm install
 ```
 
 3. Setup environment variables in a .env file:
@@ -40,7 +40,7 @@ DATABASE_URL=your_postgres_url
 PORT=5000
 ```
 
-4.Run the app:
+4. Run the app:
 ```
 # Backend
 npm run server
@@ -49,17 +49,21 @@ npm run server
 npm run dev
 ```
 
+---
+
 API Endpoints 🔗
 
-GET /books – List all books
+- GET /books – List all books
 
-GET /books/:id – Get details of a book
+- GET /books/:id – Get details of a book
 
-POST /books – Add a new book
+- POST /books – Add a new book
 
-PUT /books/:id – Update book
+- PUT /books/:id – Update book
 
-DELETE /books/:id – Delete book
+- DELETE /books/:id – Delete book
+
+---
 
 Contributing 🤝
 
@@ -72,6 +76,8 @@ Make changes & commit: git commit -m "Add feature"
 Push branch: git push origin feature-name
 
 Open a Pull Request
+
+---
 
 License 📄
 
