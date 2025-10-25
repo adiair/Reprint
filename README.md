@@ -3,6 +3,11 @@
 Reprint is a **full-stack web application** that serves as a book encyclopedia. Users can explore books, upload their own with images and summaries, and search for any book in the database.
 
 ---
+<img width="1453" height="785" alt="Screenshot 2025-10-25 220130" src="https://github.com/user-attachments/assets/279c5834-770d-42b1-bd95-fb1d9dfe8f09" />
+
+<img width="1132" height="616" alt="image" src="https://github.com/user-attachments/assets/ca7f9664-cf29-490e-95bb-7371d9699f71" />
+
+---
 
 ## Features ✨
 
